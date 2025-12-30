@@ -2,6 +2,8 @@
 
 一个基于 Next.js 构建的现代化网站安全检测工具，能够深入分析目标站点的 HTTP 协议支持、SSL/TLS 证书详情、连接耗时以及服务器地理位置等信息。
 
+<img width="982" height="1654" alt="image" src="https://github.com/user-attachments/assets/38d2e163-a390-4452-9931-f7be1fff7aa4" />
+
 ## ✨ 主要功能
 
 *   🔒 **SSL/TLS 深度分析**: 检测 TLS 版本、加密套件、证书有效期、颁发者及 HSTS 支持状态。
