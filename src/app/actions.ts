@@ -74,6 +74,7 @@ export async function checkSite(inputUrl: string): Promise<SiteInfo> {
         supportsHttp1_1: false,
         supportsHttp2: false,
         supportsHttp3: false,
+        supportsHsts: false,
         error: `请求过于频繁，请等待 ${remainingSeconds} 秒后再试`
     }
   }
@@ -201,6 +202,10 @@ export async function checkSite(inputUrl: string): Promise<SiteInfo> {
       let t4 = 0 // Response
       let remoteIP = ''
 
+      // Collect data for parsing
+      const MAX_SIZE = 100 * 1024 // 100KB
+      let data = ''
+
       const req = requestModule.request(urlStr, { 
           method: 'GET', // Use GET to fetch body
           rejectUnauthorized: false,
@@ -236,10 +241,6 @@ export async function checkSite(inputUrl: string): Promise<SiteInfo> {
             ttfb: Math.round(t4 - t3),
             total: Math.round(t4 - t0)
         }
-
-        // Collect data for parsing
-        let data = ''
-        const MAX_SIZE = 100 * 1024 // 100KB
         
         res.setEncoding('utf8')
         res.on('data', (chunk) => {
@@ -318,6 +319,14 @@ export async function checkSite(inputUrl: string): Promise<SiteInfo> {
              // Ensure resolve if destroyed
              if (!res.complete) finish() 
         })
+
+        // Handle errors in response stream context
+        res.on('error', (e) => {
+             // If we destroyed it manually, we might treat it as partial success
+             if (data.length >= MAX_SIZE) {
+                  finish()
+             }
+        })
       })
 
       req.on('socket', (socket) => {
@@ -348,8 +357,6 @@ export async function checkSite(inputUrl: string): Promise<SiteInfo> {
       })
 
       req.end()
-      
-      let data = ''
     })
 
     return {

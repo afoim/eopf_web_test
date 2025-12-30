@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Loader2, Globe, Shield, Server, AlertCircle, CheckCircle, XCircle, Timer, Info, Github, User } from 'lucide-react'
+import { ModeToggle } from '@/components/mode-toggle'
 
 export default function Home() {
   const [url, setUrl] = useState('')
@@ -39,7 +40,10 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 relative transition-colors duration-300">
+      <div className="absolute top-4 right-4">
+        <ModeToggle />
+      </div>
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="text-center">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl">
